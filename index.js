@@ -20,6 +20,13 @@ function initializeData() {
 // TASK: Get elements from the DOM
 const elements = {
   headerBoardName: document.getElementById("header-board-name"),
+  filterDiv: document.getElementById("filterDiv"),
+  hideSideBarBtn: document.getElementById("hide-side-bar-btn"),
+  showSideBarBtn: document.getElementById("show-side-bar-btn"),
+  //addNew: document.getElementById('add-new-task-btn'),
+  themeSwitch: document.getElementById("switch"),
+  createNewTaskBtn: document.getElementById("create-task-btn"),
+  modalWindow: document.getElementById("edit-task-form"),
 };
 
 let activeBoard = "";
