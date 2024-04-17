@@ -1,7 +1,8 @@
 // TASK: import helper functions from utils
 import { getTasks, createNewTask } from './utils/taskFunctions.js'
-import { initialData } from './initialData.js'
 // TASK: import initialData
+import { initialData } from './initialData.js'
+
 
 
 /*************************************************************************************************************************************************
@@ -20,8 +21,11 @@ function initializeData() {
 
 // TASK: Get elements from the DOM
 const elements = {
+  headerBoardName: document.getElementById('header-board-name'),
+  
+  
+};
 
-}
 
 let activeBoard = ""
 
@@ -49,13 +53,13 @@ function displayBoards(boards) {
     const boardElement = document.createElement("button");
     boardElement.textContent = board;
     boardElement.classList.add("board-btn");
-    boardElement.click()  { 
+    boardElement.addEventListener('click', () => { 
       elements.headerBoardName.textContent = board;
       filterAndDisplayTasksByBoard(board);
       activeBoard = board //assigns active board
       localStorage.setItem("activeBoard", JSON.stringify(activeBoard))
       styleActiveBoard(activeBoard)
-    };
+    });
     boardsContainer.appendChild(boardElement);
   });
 
@@ -89,7 +93,7 @@ function filterAndDisplayTasksByBoard(boardName) {
       // Listen for a click event on each task and open a modal
       taskElement.click() => { 
         openEditTaskModal(task);
-      });
+      };
 
       tasksContainer.appendChild(taskElement);
     });
