@@ -27,6 +27,8 @@ const elements = {
   themeSwitch: document.getElementById("switch"),
   createNewTaskBtn: document.getElementById("create-task-btn"),
   modalWindow: document.getElementById("edit-task-form"),
+  columnDivs: document.querySelectorAll(".column-div"),
+  editTaskModal: document.querySelector("edit-task-modal-window"),
 };
 
 let activeBoard = "";
@@ -231,7 +233,7 @@ function saveTaskChanges(taskId) {
 
   // Create an object with the updated task details
 
-  // Update task using a hlper functoin
+  // Update task using a helper function
 
   // Close the modal and refresh the UI to reflect the changes
 
