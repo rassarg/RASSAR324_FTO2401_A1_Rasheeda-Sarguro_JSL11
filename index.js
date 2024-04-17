@@ -1,4 +1,6 @@
 // TASK: import helper functions from utils
+import { getTasks, createNewTask } from './utils/taskFunctions.js'
+import { initialData } from './initialData.js'
 // TASK: import initialData
 
 
@@ -31,7 +33,7 @@ function fetchAndDisplayBoardsAndTasks() {
   displayBoards(boards);
   if (boards.length > 0) {
     const localStorageBoard = JSON.parse(localStorage.getItem("activeBoard"))
-    activeBoard = localStorageBoard ? localStorageBoard ;  boards[0]; 
+    activeBoard = localStorageBoard ? localStorageBoard :  boards[0]; 
     elements.headerBoardName.textContent = activeBoard
     styleActiveBoard(activeBoard)
     refreshTasksUI();
