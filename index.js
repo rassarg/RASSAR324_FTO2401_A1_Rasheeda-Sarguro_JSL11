@@ -221,7 +221,8 @@ function toggleSidebar(show) {
 }
 
 function toggleTheme() {
-  document.body.classList.toggle("light-theme");
+  const isLightTheme = document.body.classList.toggle("light-theme");
+  localStorage.setItem("theme", isLightTheme ? "light" : "dark");
 }
 
 function openEditTaskModal(task) {
@@ -260,7 +261,14 @@ function init() {
   const showSidebar = true;
   toggleSidebar(showSidebar);
   elements.showSideBarBtn.style.display = "block";
-  const isLightTheme = localStorage.getItem("light-theme") === "enabled";
-  document.body.classList.toggle("light-theme", isLightTheme);
+
+  const savedTheme = localStorage.getItem("theme"); // Checks to see if a theme choice is stored in localStorage
+  // Applies the stored theme
+  if (savedTheme === "light") {
+    document.body.classList.add("light-theme");
+  } else {
+    document.body.classList.remove("light-theme");
+  }
+
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
