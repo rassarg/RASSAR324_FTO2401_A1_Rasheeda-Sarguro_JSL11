@@ -263,12 +263,9 @@ function init() {
   elements.showSideBarBtn.style.display = "block";
 
   const savedTheme = localStorage.getItem("theme"); // Checks to see if a theme choice is stored in localStorage
-  // Applies the stored theme
-  if (savedTheme === "light") {
-    document.body.classList.add("light-theme");
-  } else {
-    document.body.classList.remove("light-theme");
-  }
+  const isLightTheme = savedTheme === "light";
+  document.body.classList.toggle("light-theme", isLightTheme);
+  elements.themeSwitch.checked = isLightTheme;
 
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
