@@ -233,16 +233,10 @@ function toggleSidebar(show) {
 function toggleTheme() {
   const isLightTheme = document.body.classList.toggle("light-theme");
   localStorage.setItem("theme", isLightTheme ? "light" : "dark");
-  elements.logo;
-
-  // Toggle the logo color based on the theme
-  if (isLightTheme) {
-    // If the light theme is active, invert the colors of the logo
-    logo.style.filter = "invert(1)";
-  } else {
-    // If the light theme is not active, reset the logo color
-    logo.style.filter = "none";
-  }
+  elements.logo.src = isLightTheme
+    ? "./assets/logo-light.svg"
+    : "./assets/logo-dark.svg";
+  localStorage.setItem("logo", isLightTheme ? "light" : "dark");
 }
 
 function openEditTaskModal(task) {
@@ -285,6 +279,11 @@ function init() {
   const isLightTheme = savedTheme === "light";
   document.body.classList.toggle("light-theme", isLightTheme);
   elements.themeSwitch.checked = isLightTheme;
+  const logoTheme = localStorage.getItem("logo") || "dark";
+  elements.logo.src =
+    logoTheme === "light"
+      ? "./assets/logo-light.svg"
+      : "./assets/logo-dark.svg";
 
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
