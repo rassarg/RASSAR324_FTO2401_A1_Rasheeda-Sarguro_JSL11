@@ -29,6 +29,7 @@ const elements = {
   modalWindow: document.getElementById("edit-task-form"),
   columnDivs: document.querySelectorAll(".column-div"),
   editTaskModal: document.querySelector("edit-task-modal-window"),
+  logo: document.getElementById("logo"),
 };
 
 let activeBoard = "";
@@ -232,6 +233,16 @@ function toggleSidebar(show) {
 function toggleTheme() {
   const isLightTheme = document.body.classList.toggle("light-theme");
   localStorage.setItem("theme", isLightTheme ? "light" : "dark");
+  elements.logo;
+
+  // Toggle the logo color based on the theme
+  if (isLightTheme) {
+    // If the light theme is active, invert the colors of the logo
+    logo.style.filter = "invert(1)";
+  } else {
+    // If the light theme is not active, reset the logo color
+    logo.style.filter = "none";
+  }
 }
 
 function openEditTaskModal(task) {
