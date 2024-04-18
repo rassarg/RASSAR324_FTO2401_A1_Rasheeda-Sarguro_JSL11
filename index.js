@@ -17,19 +17,18 @@ function initializeData() {
   }
 }
 
-// TASK: Get elements from the DOM
+// DOM ELEMENTS //
 const elements = {
   headerBoardName: document.getElementById("header-board-name"),
   filterDiv: document.getElementById("filterDiv"),
-  hideSideBarBtn: document.getElementById("hide-side-bar-btn"),
-  showSideBarBtn: document.getElementById("show-side-bar-btn"),
-  //addNew: document.getElementById('add-new-task-btn'),
-  themeSwitch: document.getElementById("switch"),
+  hideSideBarBtn: document.getElementById("hide-side-bar-btn"), // Hide Side Bar Button
+  showSideBarBtn: document.getElementById("show-side-bar-btn"), // Show Side Bar Button
+  addNew: document.getElementById("add-new-task-btn"), // Add New Task button
+  themeSwitch: document.getElementById("switch"), // Toggle button
   createNewTaskBtn: document.getElementById("create-task-btn"),
   modalWindow: document.getElementById("edit-task-form"),
   columnDivs: document.querySelectorAll(".column-div"),
   editTaskModal: document.querySelector("edit-task-modal-window"),
-  showSideBarBtn: document.getElementById("show-side-bar-btn"),
 };
 
 let activeBoard = "";
@@ -149,7 +148,12 @@ function addTaskToUI(task) {
   tasksContainer.appendChild(taskElement);
 }
 
+// EVENT LISTENERS //
 function setupEventListeners() {
+  elements.addNew.addEventListener("click", () => {
+    openNewTaskModal();
+  });
+
   // Cancel editing task event listener
   const cancelEditBtn = document.getElementById("cancel-edit-btn");
   cancelEditBtn.addEventListener("click", () =>
@@ -197,6 +201,11 @@ function toggleModal(show, modal = elements.modalWindow) {
 /*************************************************************************************************************************************************
  * COMPLETE FUNCTION CODE
  * **********************************************************************************************************************************************/
+
+function openNewTaskModal() {
+  const modal = document.getElementById("new-task-modal-window");
+  modal.style.display = "block";
+}
 
 function addTask(event) {
   event.preventDefault();
@@ -257,8 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function init() {
   setupEventListeners();
-  //const showSidebar = localStorage.getItem("showSideBar") === "true";
-  const showSidebar = true;
+  const showSidebar = localStorage.getItem("showSideBar") === "true";
   toggleSidebar(showSidebar);
   elements.showSideBarBtn.style.display = "block";
 
