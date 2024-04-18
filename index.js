@@ -29,6 +29,7 @@ const elements = {
   modalWindow: document.getElementById("edit-task-form"),
   columnDivs: document.querySelectorAll(".column-div"),
   editTaskModal: document.querySelector("edit-task-modal-window"),
+  showSideBarBtn: document.getElementById("show-side-bar-btn"),
 };
 
 let activeBoard = "";
@@ -142,10 +143,10 @@ function addTaskToUI(task) {
 
   const taskElement = document.createElement("div");
   taskElement.className = "task-div";
-  taskElement.textContent = task.title; // Modify as needed
+  taskElement.textContent = task.title; // Modify as needed: `${task.title} - ${task.description}`; // Display task title and description
   taskElement.setAttribute("data-task-id", task.id);
 
-  tasksContainer.appendChild();
+  tasksContainer.appendChild(taskElement);
 }
 
 function setupEventListeners() {
@@ -212,7 +213,12 @@ function addTask(event) {
   }
 }
 
-function toggleSidebar(show) {}
+function toggleSidebar(show) {
+  console.log("Toggle sidebar:", show);
+  const sidebar = document.querySelector(".side-bar");
+  sidebar.style.display = show ? "block" : "none";
+  localStorage.setItem("showSideBar", show ? "true" : "false");
+}
 
 function toggleTheme() {}
 
@@ -248,8 +254,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function init() {
   setupEventListeners();
-  const showSidebar = localStorage.getItem("showSideBar") === "true";
+  //const showSidebar = localStorage.getItem("showSideBar") === "true";
+  const showSidebar = true;
   toggleSidebar(showSidebar);
+  elements.showSideBarBtn.style.display = "block";
   const isLightTheme = localStorage.getItem("light-theme") === "enabled";
   document.body.classList.toggle("light-theme", isLightTheme);
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
