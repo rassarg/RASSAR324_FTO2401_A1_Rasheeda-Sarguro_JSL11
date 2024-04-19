@@ -21,17 +21,25 @@ initializeData();
 
 // DOM ELEMENTS //
 const elements = {
-  headerBoardName: document.getElementById("header-board-name"),
-  filterDiv: document.getElementById("filterDiv"),
-  hideSideBarBtn: document.getElementById("hide-side-bar-btn"), // Hide Side Bar Button
-  showSideBarBtn: document.getElementById("show-side-bar-btn"), // Show Side Bar Button
-  addNew: document.getElementById("add-new-task-btn"), // Add New Task button
-  themeSwitch: document.getElementById("switch"), // Toggle button
-  createNewTaskBtn: document.getElementById("create-task-btn"),
-  modalWindow: document.getElementById("edit-task-form"),
+  addNew: document.getElementById("add-new-task-btn"), // Btn to Add New Task
+  cancelAddTaskBtn: document.getElementById("cancel-add-task-btn"), // Btn to cancel 'Add new task' in modal
+  cancelEditBtn: document.getElementById("cancel-edit-btn"), // Btn to cancel editing task
   columnDivs: document.querySelectorAll(".column-div"),
-  editTaskModal: document.querySelector("edit-task-modal-window"),
+  createNewTaskBtn: document.getElementById("create-task-btn"), // Btn to create a new task in 'add new task' modal
+  deleteTaskBtn: document.getElementById("delete-task-btn"), // Btn to delete task
+  editTaskTitleInput: document.getElementById("edit-task-title-input"), // Input to edit task-title
+  editTaskDescInput: document.getElementById("edit-task-desc-input"), // Input to edit task-description
+  editTaskModal: document.querySelector(".edit-task-modal-window"),
+  editSelectStatus: document.getElementById("edit-select-status"), // Select for status in modal
+  filterDiv: document.getElementById("filterDiv"),
+  hideSideBarBtn: document.getElementById("hide-side-bar-btn"), // Btn to hide Side Bar
+  headerBoardName: document.getElementById("header-board-name"),
   logo: document.getElementById("logo"),
+  modal: document.getElementById("new-task-modal-window"),
+  modalWindow: document.getElementById("edit-task-form"),
+  saveTaskChangesBtn: document.getElementById("save-task-changes-btn"),
+  showSideBarBtn: document.getElementById("show-side-bar-btn"), // Show Side Bar Button
+  themeSwitch: document.getElementById("switch"), // Toggle button
 };
 
 let activeBoard = "";
@@ -158,15 +166,13 @@ function setupEventListeners() {
   });
 
   // Cancel editing task event listener
-  const cancelEditBtn = document.getElementById("cancel-edit-btn");
-  cancelEditBtn.addEventListener("click", () =>
+  elements.cancelEditBtn.addEventListener("click", () =>
     toggleModal(false, elements.editTaskModal)
   );
 
   // Cancel adding new task event listener
-  const cancelAddTaskBtn = document.getElementById("cancel-add-task-btn");
-  cancelAddTaskBtn.addEventListener("click", () => {
-    toggleModal(false);
+  elements.cancelAddTaskBtn.addEventListener("click", () => {
+    toggleModal(false, elements.modal);
     elements.filterDiv.style.display = "none"; // Also hide the filter overlay
   });
 
@@ -208,8 +214,7 @@ function toggleModal(show, modal = elements.modalWindow) {
  * **********************************************************************************************************************************************/
 
 function openNewTaskModal() {
-  const modal = document.getElementById("new-task-modal-window");
-  modal.style.display = "block";
+  elements.modal.style.display = "block";
 }
 
 function addTask(event) {
@@ -244,7 +249,12 @@ function toggleTheme() {
 
 function openEditTaskModal(task) {
   // Set task details in modal inputs
+  elements.editTaskTitleInput.value = task.title;
+  elements.editTaskDescInput.value = task.description;
+  elements.editSelectStatus.value = task.status;
+
   // Get button elements from the task modal
+
   // Call saveTaskChanges upon click of Save Changes button
   // Delete task using a helper function and close the task modal
   //toggleModal(true, elements.editTaskModal); // Show the edit task modal
