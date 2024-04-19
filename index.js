@@ -17,6 +17,8 @@ function initializeData() {
   }
 }
 
+initializeData();
+
 // DOM ELEMENTS //
 const elements = {
   headerBoardName: document.getElementById("header-board-name"),
@@ -115,9 +117,9 @@ function refreshTasksUI() {
 function styleActiveBoard(boardName) {
   document.querySelectorAll(".board-btn").forEach((btn) => {
     if (btn.textContent === boardName) {
-      btn.add("active");
+      btn.classList.add("active");
     } else {
-      btn.remove("active");
+      btn.classList.remove("active");
     }
   });
 }
@@ -224,7 +226,6 @@ function addTask(event) {
 }
 
 function toggleSidebar(show) {
-  console.log("Toggle sidebar:", show);
   const sidebar = document.querySelector(".side-bar");
   sidebar.style.display = show ? "block" : "none";
   localStorage.setItem("showSideBar", show ? "true" : "false");
@@ -275,8 +276,10 @@ function init() {
   toggleSidebar(showSidebar);
   elements.showSideBarBtn.style.display = "block";
 
-  const savedTheme = localStorage.getItem("theme"); // Checks to see if a theme choice is stored in localStorage
-  const isLightTheme = savedTheme === "light";
+  // Check if either 'light-theme' or 'theme' is set to 'light' in localStorage
+  const isLightTheme =
+    localStorage.getItem("light-theme") === "enabled" ||
+    localStorage.getItem("theme") === "light";
   document.body.classList.toggle("light-theme", isLightTheme);
   elements.themeSwitch.checked = isLightTheme;
   const logoTheme = localStorage.getItem("logo") || "dark";
@@ -287,3 +290,12 @@ function init() {
 
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
+
+// function init() {
+//   setupEventListeners();
+//   const showSidebar = localStorage.getItem('showSideBar') === 'true';
+//   toggleSidebar(showSidebar);
+//   const isLightTheme = localStorage.getItem('light-theme') === 'enabled';
+//   document.body.classList.toggle('light-theme', isLightTheme);
+//   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
+// }
