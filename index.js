@@ -109,6 +109,7 @@ function filterAndDisplayTasksByBoard(boardName) {
         // Listen for a click event on each task and open a modal
         taskElement.addEventListener("click", () => {
           openEditTaskModal(task);
+          elements.editTaskModal.style.display = "block";
         });
 
         tasksContainer.appendChild(taskElement);
@@ -237,15 +238,24 @@ function addTask(event) {
 
 function toggleSidebar(show) {
   const sidebar = document.querySelector(".side-bar");
+  const hideSideBarDiv = document.querySelector(".hide-side-bar-div");
+
   elements.showSideBarBtn.style.display = show ? "none" : "block"; // Hide the button when sidebar is shown
   sidebar.style.display = show ? "flex" : "none";
   localStorage.setItem("showSideBar", show ? "true" : "false");
-  const hideSideBarDiv = document.querySelector(".hide-side-bar-div");
+
+  // Makes the "hideSideBarDiv" appear on screens < 480px
   hideSideBarDiv.style.display = window.matchMedia("(max-width: 480px)").matches
     ? show
       ? "flex"
       : "none"
     : "flex";
+
+  // Set the default view of .side-bar to display: none on screens < 480px
+  window.matchMedia("(max-width: 480px)").matches
+    ? ((sidebar.style.display = "none"),
+      localStorage.setItem("sidebarHidden", "true"))
+    : localStorage.setItem("sidebarHidden", "false");
 }
 
 function toggleTheme() {
@@ -294,16 +304,12 @@ function init() {
   toggleSidebar(showSidebar);
 
   // Check if either 'light-theme' or 'theme' is set to 'light' in localStorage
-  const isLightTheme =
-    localStorage.getItem("light-theme") === "enabled" ||
-    localStorage.getItem("theme") === "light";
+  const isLightTheme = localStorage.getItem("theme") === "light";
   document.body.classList.toggle("light-theme", isLightTheme);
   elements.themeSwitch.checked = isLightTheme;
-  const logoTheme = localStorage.getItem("logo") || "dark";
-  elements.logo.src =
-    logoTheme === "light"
-      ? "./assets/logo-light.svg"
-      : "./assets/logo-dark.svg";
+  elements.logo.src = isLightTheme
+    ? "./assets/logo-light.svg"
+    : "./assets/logo-dark.svg";
 
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
