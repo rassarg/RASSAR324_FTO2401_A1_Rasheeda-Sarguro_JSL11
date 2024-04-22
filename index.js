@@ -189,10 +189,13 @@ function setupEventListeners() {
   // Theme switch event listener
   elements.themeSwitch.addEventListener("change", toggleTheme);
 
-  // Show Add New Task Modal event listener
-  elements.createNewTaskBtn.addEventListener("click", () => {
-    toggleModal(true);
-    elements.filterDiv.style.display = "block"; // Also show the filter overlay
+  // // Show Add New Task Modal event listener
+  // elements.createNewTaskBtn.addEventListener("click", () => {
+  //   toggleModal(true);
+  //   elements.filterDiv.style.display = "block"; // Also show the filter overlay
+  // });
+  elements.createNewTaskBtn.addEventListener("click", (event) => {
+    addTask(event); // Call addTask function when the button is clicked
   });
 
   // Add new task form submission event listener
@@ -234,8 +237,15 @@ function addTask(event) {
 
 function toggleSidebar(show) {
   const sidebar = document.querySelector(".side-bar");
-  sidebar.style.display = show ? "block" : "none";
+  elements.showSideBarBtn.style.display = show ? "none" : "block"; // Hide the button when sidebar is shown
+  sidebar.style.display = show ? "flex" : "none";
   localStorage.setItem("showSideBar", show ? "true" : "false");
+  const hideSideBarDiv = document.querySelector(".hide-side-bar-div");
+  hideSideBarDiv.style.display = window.matchMedia("(max-width: 480px)").matches
+    ? show
+      ? "flex"
+      : "none"
+    : "flex";
 }
 
 function toggleTheme() {
@@ -282,7 +292,6 @@ function init() {
   setupEventListeners();
   const showSidebar = localStorage.getItem("showSideBar") === "true";
   toggleSidebar(showSidebar);
-  elements.showSideBarBtn.style.display = "block";
 
   // Check if either 'light-theme' or 'theme' is set to 'light' in localStorage
   const isLightTheme =
