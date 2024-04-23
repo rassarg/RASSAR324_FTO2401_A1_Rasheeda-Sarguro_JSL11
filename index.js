@@ -314,19 +314,23 @@ function openEditTaskModal(task) {
   // Delete task using a helper function
   // Delete task event listener
   elements.deleteTaskBtn.addEventListener("click", () => {
-    deleteTask(task.id);
+    // Confirm deletion with a dialog
+    if (confirm("Are you sure you want to delete this task?")) {
+      // Remove the task element from the DOM
+      const taskElement = document.querySelector(
+        `.task-div[data-task-id="${task.id}"]`
+      );
+      if (taskElement) {
+        taskElement.remove();
+      }
 
-    // Remove the task element from the DOM
-    const taskElement = document.querySelector(
-      `.task-div[data-task-id="${task.id}"]`
-    );
-    if (taskElement) {
-      taskElement.remove();
+      // Delete task using a helper function
+      deleteTask(task.id);
+
+      // After deleting the task, close the modal
+      toggleModal(false, elements.editTaskModal);
+      elements.filterDiv.style.display = "none";
     }
-
-    // After deleting the task, close the modal
-    toggleModal(false, elements.editTaskModal);
-    elements.filterDiv.style.display = "none";
   });
   //  close the task modal
   elements.editTaskModal.style.display = "block";
