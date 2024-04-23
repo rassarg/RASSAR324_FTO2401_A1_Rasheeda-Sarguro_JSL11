@@ -2,15 +2,15 @@
 import {
   getTasks,
   createNewTask,
-  patchTask,
   deleteTask,
+  putTask,
 } from "./utils/taskFunctions.js";
 // TASK: import initialData
 import { initialData } from "./initialData.js";
 
 /*************************************************************************************************************************************************
- 
- * **********************************************************************************************************************************************/
+
+ ***********************************************************************************************************************************************/
 
 // Function checks if local storage already has data, if not it loads initialData to localStorage
 function initializeData() {
@@ -103,28 +103,35 @@ function filterAndDisplayTasksByBoard(boardName) {
   elements.columnDivs.forEach((column) => {
     const status = column.getAttribute("data-status");
     // Reset column content while preserving the column title
-    column.innerHTML = `<div class="column-head-div">
-                            <span class="dot" id="${status}-dot"></span>
-                            <h4 class="columnHeader">${status.toUpperCase()}</h4>
-                          </div>`;
+    const columnHeader = column.querySelector(".columnHeader");
+    columnHeader.textContent = status.toUpperCase();
 
-    const tasksContainer = document.createElement("div");
-    column.appendChild(tasksContainer);
+    const tasksContainer = column.querySelector(".tasks-container");
+    tasksContainer.innerHTML = ""; // Clear existing tasks
 
     filteredTasks
       .filter((task) => task.status === status)
       .forEach((task) => {
-        const taskElement = document.createElement("div");
-        taskElement.classList.add("task-div");
-        taskElement.textContent = task.title;
-        taskElement.setAttribute("data-task-id", task.id);
+        const existingTaskElement = tasksContainer.querySelector(
+          `.task-div[data-task-id="${task.id}"]`
+        );
+        if (existingTaskElement) {
+          // Update existing task element
+          existingTaskElement.textContent = task.title;
+        } else {
+          // Create new task element
+          const taskElement = document.createElement("div");
+          taskElement.classList.add("task-div");
+          taskElement.textContent = task.title;
+          taskElement.setAttribute("data-task-id", task.id);
 
-        // Listen for a click event on each task and open a modal
-        taskElement.addEventListener("click", () => {
-          openEditTaskModal(task);
-        });
+          // Listen for a click event on each task and open a modal
+          taskElement.addEventListener("click", () => {
+            openEditTaskModal(task);
+          });
 
-        tasksContainer.appendChild(taskElement);
+          tasksContainer.appendChild(taskElement);
+        }
       });
   });
 }
@@ -170,6 +177,7 @@ function addTaskToUI(task) {
   taskElement.setAttribute("data-task-id", task.id);
 
   tasksContainer.appendChild(taskElement);
+  console.log(`Title '${task.title}' added to ${task.status} column.`);
 }
 
 // EVENT LISTENERS //
@@ -256,14 +264,14 @@ function addTask(event) {
     alert("Please add a description");
     return;
   }
-  //Assign user input to the task object
+
   const task = {
     title: elements.title.value,
     description: elements.desc.value,
     status: elements.status.value,
     board: activeBoard,
   };
-  // Creates a new task object
+  // Create a new task object without passing any arguments
   const newTask = createNewTask(task);
   if (newTask) {
     task.title = newTask.title;
@@ -321,29 +329,27 @@ function openEditTaskModal(task) {
   // Delete task using a helper function
   // Delete task event listener
   elements.deleteTaskBtn.addEventListener("click", () => {
-    // Confirm deletion with a dialog
-    if (confirm("Are you sure you want to delete this task?")) {
-      // Remove the task element from the DOM
-      const taskElement = document.querySelector(
-        `.task-div[data-task-id="${task.id}"]`
-      );
-      if (taskElement) {
-        taskElement.remove();
-      }
+    // Delete task using a helper function
+    deleteTask(task.id);
 
-      // Delete task using a helper function
-      deleteTask(task.id);
+    // Display a confirmation message in the console
+    console.log(`Task ${task.title} has been deleted.`);
+    // After deleting the task, close the modal
+    toggleModal(false, elements.editTaskModal);
+    elements.filterDiv.style.display = "none";
 
-      // Display a confirmation message in the console
-      console.log(`Task ${task.title} has been deleted.`);
-      // After deleting the task, close the modal
-      toggleModal(false, elements.editTaskModal);
-      elements.filterDiv.style.display = "none";
+    // Remove the task element from the DOM
+    const taskElement = document.querySelector(
+      `.task-div[data-task-id="${task.id}"]`
+    );
+    if (taskElement) {
+      taskElement.remove();
     }
   });
   //  close the task modal
   elements.editTaskModal.style.display = "block";
   elements.filterDiv.style.display = "block";
+  refreshTasksUI();
 }
 
 function saveTaskChanges(taskId) {
@@ -358,9 +364,13 @@ function saveTaskChanges(taskId) {
     title: updatedTaskTitle,
     description: updatedTaskDescription,
     status: updatedTaskStatus,
+    board: activeBoard,
   };
+  console.log(
+    `Task: '${updatedTask.title}' has been moved to status column: '${updatedTask.status}'`
+  );
   // Update task using a helper function
-  patchTask(taskId, updatedTask);
+  putTask(taskId, updatedTask);
   // Close the modal and refresh the UI to reflect the changes
   toggleModal(false, elements.editTaskModal);
   elements.filterDiv.style.display = "none";
