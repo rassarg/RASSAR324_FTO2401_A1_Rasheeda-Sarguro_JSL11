@@ -1,5 +1,10 @@
 // TASK: import helper functions from utils
-import { getTasks, createNewTask } from "./utils/taskFunctions.js";
+import {
+  getTasks,
+  createNewTask,
+  patchTask,
+  deleteTask,
+} from "./utils/taskFunctions.js";
 // TASK: import initialData
 import { initialData } from "./initialData.js";
 
@@ -200,9 +205,9 @@ function setupEventListeners() {
   elements.themeSwitch.addEventListener("change", toggleTheme);
 
   // Show Add New Task Modal event listener
-  elements.createNewTaskBtn.addEventListener("click", (event) => {
+  elements.createNewTaskBtn.addEventListener("click", () => {
     elements.filterDiv.style.display = "block"; // Also show the filter overlay
-    addTask(event);
+    toggleModal(true);
   });
 
   // Edit Task Modal:
@@ -226,6 +231,20 @@ function setupEventListeners() {
   // Submit edit form event listener
   elements.modalWindow.addEventListener("submit", (event) => {
     addTask(event);
+  });
+
+  // Save task changes event listener
+  elements.saveTaskChangesBtn.addEventListener("click", () => {
+    saveTaskChanges();
+  });
+
+  // Delete task event listener
+  elements.deleteTaskBtn.addEventListener("click", () => {
+    deleteTask();
+
+    // After deleting the task, close the modal
+    toggleModal(false, elements.editTaskModal);
+    elements.filterDiv.style.display = "none";
   });
 }
 
@@ -251,7 +270,7 @@ function addTask(event) {
     status: elements.status.value,
     title: elements.title.value,
     description: elements.desc.value,
-    board: JSON.parse(localStorage.getItem("activeBoard")),
+    board: activeBoard,
   };
   // Create a new task object without passing any arguments
   const newTask = createNewTask(task);
@@ -314,22 +333,22 @@ function openEditTaskModal(task) {
 
 function saveTaskChanges(taskId) {
   // Get new user inputs
-  const updatedTitle = elements.editTaskTitleInput.value;
-  const updatedDescription = elements.editTaskDescInput.value;
-  const updatedStatus = elements.editSelectStatus.value;
+  const updatedTaskTitle = elements.editTaskTitleInput.value;
+  const updatedTaskDescription = elements.editTaskDescInput.value;
+  const updatedTaskStatus = elements.editSelectStatus.value;
 
   // Create an object with the updated task details
   const updatedTask = {
-    id: taskId, // Double check where taskId comes from
-    title: updatedTitle,
-    description: updatedDescription,
-    status: updatedStatus,
+    id: taskId,
+    title: updatedTaskTitle,
+    description: updatedTaskDescription,
+    status: updatedTaskStatus,
   };
   // Update task using a helper function
   patchTask(updatedTask);
   // Close the modal and refresh the UI to reflect the changes
   toggleModal(false, elements.editTaskModal);
-  //elements.filterDiv.style.display = "none";
+  elements.filterDiv.style.display = "none";
 
   refreshTasksUI();
 }
