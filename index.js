@@ -95,7 +95,7 @@ function displayBoards(boards) {
 }
 
 // Filters tasks corresponding to the board name and displays them on the DOM.
-// TASK: Fix Bugs
+
 function filterAndDisplayTasksByBoard(boardName) {
   const tasks = getTasks(); // Fetch tasks from a simulated local storage function
   const filteredTasks = tasks.filter((task) => task.board === boardName);
@@ -124,7 +124,6 @@ function filterAndDisplayTasksByBoard(boardName) {
         // Listen for a click event on each task and open a modal
         taskElement.addEventListener("click", () => {
           openEditTaskModal(task);
-          elements.editTaskModal.style.display = "block";
         });
 
         tasksContainer.appendChild(taskElement);
@@ -132,7 +131,6 @@ function filterAndDisplayTasksByBoard(boardName) {
   });
 }
 
-// TODO?
 function refreshTasksUI() {
   filterAndDisplayTasksByBoard(activeBoard);
 }
@@ -232,20 +230,6 @@ function setupEventListeners() {
   elements.modalWindow.addEventListener("submit", (event) => {
     addTask(event);
   });
-
-  // Save task changes event listener
-  elements.saveTaskChangesBtn.addEventListener("click", () => {
-    saveTaskChanges();
-  });
-
-  // Delete task event listener
-  elements.deleteTaskBtn.addEventListener("click", () => {
-    deleteTask();
-
-    // After deleting the task, close the modal
-    toggleModal(false, elements.editTaskModal);
-    elements.filterDiv.style.display = "none";
-  });
 }
 
 // Toggles tasks modal
@@ -323,11 +307,29 @@ function openEditTaskModal(task) {
   elements.editTaskDescInput.value = task.description;
   elements.editSelectStatus.value = task.status;
 
-  // Get button elements from the task modal
+  // Get button elements from the task modal & call saveTaskChanges upon click of Save Changes button
+  elements.saveTaskChangesBtn.addEventListener("click", () => {
+    saveTaskChanges(task.id);
+  });
+  // Delete task using a helper function
+  // Delete task event listener
+  elements.deleteTaskBtn.addEventListener("click", () => {
+    deleteTask(task.id);
 
-  // Call saveTaskChanges upon click of Save Changes button
-  // Delete task using a helper function and close the task modal
-  //toggleModal(true, elements.editTaskModal); // Show the edit task modal
+    // Remove the task element from the DOM
+    const taskElement = document.querySelector(
+      `.task-div[data-task-id="${task.id}"]`
+    );
+    if (taskElement) {
+      taskElement.remove();
+    }
+
+    // After deleting the task, close the modal
+    toggleModal(false, elements.editTaskModal);
+    elements.filterDiv.style.display = "none";
+  });
+  //  close the task modal
+  elements.editTaskModal.style.display = "block";
   elements.filterDiv.style.display = "block";
 }
 
@@ -345,7 +347,7 @@ function saveTaskChanges(taskId) {
     status: updatedTaskStatus,
   };
   // Update task using a helper function
-  patchTask(updatedTask);
+  patchTask(taskId, updatedTask);
   // Close the modal and refresh the UI to reflect the changes
   toggleModal(false, elements.editTaskModal);
   elements.filterDiv.style.display = "none";
