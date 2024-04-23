@@ -26,6 +26,9 @@ const elements = {
   cancelAddTaskBtn: document.getElementById("cancel-add-task-btn"), // Btn to cancel 'Add new task' in modal
   createNewTaskBtn: document.getElementById("create-task-btn"), // Btn to save newly created task in 'add new task' modal
   modal: document.getElementById("new-task-modal-window"),
+  title: document.getElementById("title-input"),
+  desc: document.getElementById("desc-input"),
+  status: document.getElementById("select-status"),
 
   // Editing current task modal elements:
   cancelEditBtn: document.getElementById("cancel-edit-btn"), // Btn to cancel editing task
@@ -202,6 +205,7 @@ function setupEventListeners() {
 
   // Open Add New Task Modal event listener
   elements.addNew.addEventListener("click", () => {
+    elements.filterDiv.style.display = "block";
     openNewTaskModal();
   });
 
@@ -215,8 +219,8 @@ function setupEventListeners() {
 }
 
 // Toggles tasks modal
-// Task: Fix bugs
-function toggleModal(show, modal = elements.modalWindow) {
+
+function toggleModal(show, modal = elements.modal) {
   if (modal) {
     modal.style.display = show ? "block" : "none";
   }
@@ -233,14 +237,23 @@ function openNewTaskModal() {
 function addTask(event) {
   event.preventDefault();
 
-  const task = {};
+  // TODO check if values are empty
+  const task = {
+    status: elements.status.value,
+    title: elements.title.value,
+    description: elements.desc.value,
+    board: JSON.parse(localStorage.getItem("activeBoard")),
+  };
   // Create a new task object without passing any arguments
   const newTask = createNewTask(task);
   if (newTask) {
+    task.title = newTask.title;
+    task.description = newTask.description;
+    task.status = newTask.status;
     addTaskToUI(newTask);
-    toggleModal(false);
+    toggleModal(false, elements.modal);
     elements.filterDiv.style.display = "none"; // Also hide the filter overlay
-    event.target.reset();
+    //event.target.reset();
     refreshTasksUI();
   }
 }
