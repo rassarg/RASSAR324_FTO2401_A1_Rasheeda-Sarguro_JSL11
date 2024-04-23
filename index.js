@@ -214,15 +214,6 @@ function setupEventListeners() {
     toggleModal(true);
   });
 
-  // Edit Task Modal:
-  // elements.editTaskModal.addEventListener("click", () => {
-  //   if (elements.editTaskModal.style.display !== "block") {
-  //     elements.filterDiv.style.display = "block";
-  //   }
-  // });
-
-  // elements.editTaskModal.style.display = "none";
-
   // Open Add New Task Modal event listener
   elements.addNew.addEventListener("click", () => {
     elements.filterDiv.style.display = "block";
