@@ -9,7 +9,6 @@ import {
 import { initialData } from "./initialData.js";
 
 /*************************************************************************************************************************************************
- * FIX BUGS!!!
  * **********************************************************************************************************************************************/
 
 // Function checks if local storage already has data, if not it loads initialData to localStorage
@@ -256,14 +255,14 @@ function addTask(event) {
     alert("Please add a description");
     return;
   }
-
+  //Assign user input to the task object
   const task = {
     title: elements.title.value,
     description: elements.desc.value,
     status: elements.status.value,
     board: activeBoard,
   };
-  // Create a new task object without passing any arguments
+  // Creates a new task object
   const newTask = createNewTask(task);
   if (newTask) {
     task.title = newTask.title;
