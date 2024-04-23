@@ -103,28 +103,35 @@ function filterAndDisplayTasksByBoard(boardName) {
   elements.columnDivs.forEach((column) => {
     const status = column.getAttribute("data-status");
     // Reset column content while preserving the column title
-    column.innerHTML = `<div class="column-head-div">
-                            <span class="dot" id="${status}-dot"></span>
-                            <h4 class="columnHeader">${status.toUpperCase()}</h4>
-                          </div>`;
+    const columnHeader = column.querySelector(".columnHeader");
+    columnHeader.textContent = status.toUpperCase();
 
-    const tasksContainer = document.createElement("div");
-    column.appendChild(tasksContainer);
+    const tasksContainer = column.querySelector(".tasks-container");
+    tasksContainer.innerHTML = ""; // Clear existing tasks
 
     filteredTasks
       .filter((task) => task.status === status)
       .forEach((task) => {
-        const taskElement = document.createElement("div");
-        taskElement.classList.add("task-div");
-        taskElement.textContent = task.title;
-        taskElement.setAttribute("data-task-id", task.id);
+        const existingTaskElement = tasksContainer.querySelector(
+          `.task-div[data-task-id="${task.id}"]`
+        );
+        if (existingTaskElement) {
+          // Update existing task element
+          existingTaskElement.textContent = task.title;
+        } else {
+          // Create new task element
+          const taskElement = document.createElement("div");
+          taskElement.classList.add("task-div");
+          taskElement.textContent = task.title;
+          taskElement.setAttribute("data-task-id", task.id);
 
-        // Listen for a click event on each task and open a modal
-        taskElement.addEventListener("click", () => {
-          openEditTaskModal(task);
-        });
+          // Listen for a click event on each task and open a modal
+          taskElement.addEventListener("click", () => {
+            openEditTaskModal(task);
+          });
 
-        tasksContainer.appendChild(taskElement);
+          tasksContainer.appendChild(taskElement);
+        }
       });
   });
 }
@@ -170,6 +177,7 @@ function addTaskToUI(task) {
   taskElement.setAttribute("data-task-id", task.id);
 
   tasksContainer.appendChild(taskElement);
+  console.log(`Title '${task.title}' added to ${task.status} column.`);
 }
 
 // EVENT LISTENERS //
@@ -248,16 +256,15 @@ function addTask(event) {
   event.preventDefault();
   // Check if title and description are empty
   if (!elements.title.value.trim()) {
-    alert("Please add a title.");
+    alert("Please add a title");
     return;
   }
 
   if (!elements.desc.value.trim()) {
-    alert("Please add a description.");
+    alert("Please add a description");
     return;
   }
 
-  // TODO check if values are empty
   const task = {
     title: elements.title.value,
     description: elements.desc.value,
@@ -273,7 +280,7 @@ function addTask(event) {
     addTaskToUI(newTask);
     toggleModal(false, elements.modal);
     elements.filterDiv.style.display = "none"; // Also hide the filter overlay
-    //event.target.reset();
+    event.target.reset();
     refreshTasksUI();
   }
 }
@@ -335,6 +342,8 @@ function openEditTaskModal(task) {
       // Delete task using a helper function
       deleteTask(task.id);
 
+      // Display a confirmation message in the console
+      console.log(`Task ${task.title} has been deleted.`);
       // After deleting the task, close the modal
       toggleModal(false, elements.editTaskModal);
       elements.filterDiv.style.display = "none";
@@ -358,6 +367,9 @@ function saveTaskChanges(taskId) {
     description: updatedTaskDescription,
     status: updatedTaskStatus,
   };
+  console.log(
+    `Task: '${updatedTask.title}' has been moved to status column: '${updatedTask.status}'`
+  );
   // Update task using a helper function
   patchTask(taskId, updatedTask);
   // Close the modal and refresh the UI to reflect the changes

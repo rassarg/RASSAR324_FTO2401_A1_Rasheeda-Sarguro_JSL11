@@ -22,8 +22,6 @@ function initializeData() {
   }
 }
 
-initializeData();
-
 // DOM ELEMENTS //
 const elements = {
   // Add new task modal elements:
@@ -106,9 +104,9 @@ function filterAndDisplayTasksByBoard(boardName) {
     const status = column.getAttribute("data-status");
     // Reset column content while preserving the column title
     column.innerHTML = `<div class="column-head-div">
-                          <span class="dot" id="${status}-dot"></span>
-                          <h4 class="columnHeader">${status.toUpperCase()}</h4>
-                        </div>`;
+                            <span class="dot" id="${status}-dot"></span>
+                            <h4 class="columnHeader">${status.toUpperCase()}</h4>
+                          </div>`;
 
     const tasksContainer = document.createElement("div");
     column.appendChild(tasksContainer);
@@ -248,12 +246,21 @@ function openNewTaskModal() {
 
 function addTask(event) {
   event.preventDefault();
+  // Check if title and description are empty
+  if (!elements.title.value.trim()) {
+    alert("Please add a title");
+    return;
+  }
 
-  // TODO check if values are empty
+  if (!elements.desc.value.trim()) {
+    alert("Please add a description");
+    return;
+  }
+
   const task = {
-    status: elements.status.value,
     title: elements.title.value,
     description: elements.desc.value,
+    status: elements.status.value,
     board: activeBoard,
   };
   // Create a new task object without passing any arguments
@@ -265,7 +272,7 @@ function addTask(event) {
     addTaskToUI(newTask);
     toggleModal(false, elements.modal);
     elements.filterDiv.style.display = "none"; // Also hide the filter overlay
-    //event.target.reset();
+    event.target.reset();
     refreshTasksUI();
   }
 }
@@ -327,6 +334,8 @@ function openEditTaskModal(task) {
       // Delete task using a helper function
       deleteTask(task.id);
 
+      // Display a confirmation message in the console
+      console.log(`Task ${task.title} has been deleted.`);
       // After deleting the task, close the modal
       toggleModal(false, elements.editTaskModal);
       elements.filterDiv.style.display = "none";
@@ -362,6 +371,7 @@ function saveTaskChanges(taskId) {
 /*************************************************************************************************************************************************/
 
 document.addEventListener("DOMContentLoaded", function () {
+  initializeData();
   init(); // init is called after the DOM is fully loaded
 });
 
