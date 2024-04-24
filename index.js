@@ -9,8 +9,8 @@ import {
 import { initialData } from "./initialData.js";
 
 /*************************************************************************************************************************************************
-
- ***********************************************************************************************************************************************/
+SETUP CODE
+***********************************************************************************************************************************************/
 
 // Function checks if local storage already has data, if not it loads initialData to localStorage
 function initializeData() {
@@ -22,7 +22,9 @@ function initializeData() {
   }
 }
 initializeData();
+
 // DOM ELEMENTS //
+
 const elements = {
   // Add new task modal elements:
   addNew: document.getElementById("add-new-task-btn"),
@@ -98,7 +100,7 @@ function displayBoards(boards) {
 
 function filterAndDisplayTasksByBoard(boardName) {
   const tasks = getTasks(); // Fetch tasks from a simulated local storage function
-  const filteredTasks = tasks.filter((task) => task.board === boardName);
+  const filteredTasks = tasks.filter((task) => task.board === boardName); // Filter tasks based on the specified board name
 
   elements.columnDivs.forEach((column) => {
     const status = column.getAttribute("data-status");
@@ -109,9 +111,11 @@ function filterAndDisplayTasksByBoard(boardName) {
     const tasksContainer = column.querySelector(".tasks-container");
     tasksContainer.innerHTML = ""; // Clear existing tasks
 
+    // Filter tasks again to get only those with the current status
     filteredTasks
       .filter((task) => task.status === status)
       .forEach((task) => {
+        // Check if the task element already exists in the column
         const existingTaskElement = tasksContainer.querySelector(
           `.task-div[data-task-id="${task.id}"]`
         );
@@ -136,12 +140,12 @@ function filterAndDisplayTasksByBoard(boardName) {
   });
 }
 
+// Update the tasks UI based on the active board
 function refreshTasksUI() {
   filterAndDisplayTasksByBoard(activeBoard);
 }
 
 // Styles the active board by adding an active class
-
 function styleActiveBoard(boardName) {
   document.querySelectorAll(".board-btn").forEach((btn) => {
     if (btn.textContent === boardName) {
@@ -152,6 +156,7 @@ function styleActiveBoard(boardName) {
   });
 }
 
+// Add a task to the UI based on the status
 function addTaskToUI(task) {
   const column = document.querySelector(
     `.column-div[data-status="${task.status}"]`
@@ -160,17 +165,18 @@ function addTaskToUI(task) {
     console.error(`Column not found for status: ${task.status}`);
     return;
   }
-
+  // Checks if task container within column exists, otherwise create one
   let tasksContainer = column.querySelector(".tasks-container");
   if (!tasksContainer) {
     console.warn(
       `Tasks container not found for status: ${task.status}, creating one.`
     );
-    tasksContainer = document.createElement("div");
+    tasksContainer = document.createElement("div"); // create a column if it doesn't exist
     tasksContainer.className = "tasks-container";
     column.appendChild(tasksContainer);
   }
 
+  // Create a new task element and set its properties
   const taskElement = document.createElement("div");
   taskElement.className = "task-div";
   taskElement.textContent = task.title; // Modify as needed: `${task.title} - ${task.description}`; // Display task title and description
@@ -217,7 +223,7 @@ function setupEventListeners() {
   // Open Add New Task Modal event listener
   elements.addNew.addEventListener("click", () => {
     elements.filterDiv.style.display = "block";
-    openNewTaskModal();
+    elements.modal.style.display = "block";
   });
 
   // Submit Add New Task Form event listener
@@ -230,39 +236,34 @@ function setupEventListeners() {
 }
 
 // Toggles tasks modal
-
 function toggleModal(show, modal = elements.modal) {
   modal.style.display = show ? "block" : "none";
 }
 
 /*************************************************************************************************************************************************
- * COMPLETE FUNCTION CODE
- * **********************************************************************************************************************************************/
-
-function openNewTaskModal() {
-  elements.modal.style.display = "block";
-}
+FUNCTION CODE
+ ***********************************************************************************************************************************************/
 
 function addTask(event) {
   event.preventDefault();
+
   // Check if title and description are empty
   if (!elements.title.value.trim()) {
     alert("Please add a title");
     return;
   }
-
   if (!elements.desc.value.trim()) {
     alert("Please add a description");
     return;
   }
-
+  // task object with form values
   const task = {
     title: elements.title.value,
     description: elements.desc.value,
     status: elements.status.value,
     board: activeBoard,
   };
-  // Create a new task object without passing any arguments
+  // Create a new task and add it to the UI
   const newTask = createNewTask(task);
   if (newTask) {
     task.title = newTask.title;
@@ -271,16 +272,17 @@ function addTask(event) {
     addTaskToUI(newTask);
     toggleModal(false, elements.modal);
     elements.filterDiv.style.display = "none"; // Also hide the filter overlay
-    event.target.reset();
-    refreshTasksUI();
+    event.target.reset(); // Reset the form
+    refreshTasksUI(); // Refresh the tasks UI
   }
 }
-
+// Toggle sideBar
 function toggleSidebar(show) {
-  elements.showSideBarBtn.style.display = show ? "none" : "flex"; // Hide the button when sidebar is shown
-  elements.sideBar.style.display = show ? "flex" : "none";
-  elements.hideSideBarDiv.style.display = show ? "flex" : "none";
-  localStorage.setItem("showSideBar", show ? "true" : "false");
+  elements.showSideBarBtn.style.display = show ? "none" : "flex"; // Show/hide sideBar btn
+  elements.sideBar.style.display = show ? "flex" : "none"; // Show/hide the sideBar
+  elements.hideSideBarDiv.style.display = show ? "flex" : "none"; // Show/hide the 'hideSideBarDiv'
+  localStorage.setItem("showSideBar", show ? "true" : "false"); // Store the show/hide state of the sidebar in local storage
+  // show the filter overlay on screens < 480px
   if (show) {
     if (window.matchMedia("(max-width: 480px)").matches) {
       elements.filterDiv.style.display = "block";
@@ -288,7 +290,7 @@ function toggleSidebar(show) {
   }
 }
 
-// Default view of SideBar on screen sizes > 480 px
+// Default view of SideBar on screen sizes < 480px
 if (window.matchMedia("(max-width: 480px)").matches) {
   elements.filterDiv.style.display = "none";
   toggleSidebar(false);
@@ -300,7 +302,7 @@ elements.filterDiv.addEventListener("click", () => {
 });
 
 // Event listener for hideSideBarBtn
-elements.hideSideBarBtn.addEventListener("click", function () {
+elements.hideSideBarBtn.addEventListener("click", () => {
   elements.filterDiv.style.display = "none";
   toggleSidebar(false);
 });
