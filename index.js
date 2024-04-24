@@ -288,13 +288,27 @@ function toggleSidebar(show) {
   }
 }
 
+// Default view of SideBar on screen sizes > 480 px
 if (window.matchMedia("(max-width: 480px)").matches) {
-  elements.filterDiv.style.display = "true" && toggleSidebar(true);
+  elements.filterDiv.style.display = "block";
+  toggleSidebar(true);
 }
+// Clicking outside the SideBar to close it
 elements.filterDiv.addEventListener("click", () => {
   elements.filterDiv.style.display = "none";
   toggleSidebar(false);
 });
+
+// Event listener for hideSideBarBtn
+document;
+elements.hideSideBarBtn.addEventListener("click", function () {
+  elements.filterDiv.style.display = "none";
+  toggleSidebar(false);
+});
+
+if (window.matchMedia("(max-width: 480px)").matches) {
+  document.querySelector(".logo-mobile").style.display = "none";
+}
 
 function toggleTheme() {
   const isLightTheme = document.body.classList.toggle("light-theme");
@@ -386,8 +400,4 @@ function init() {
     : "./assets/logo-dark.svg";
 
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
-}
-
-if (window.matchMedia("(max-width: 480px)").matches) {
-  document.querySelector(".logo-mobile").style.display = "none";
 }
