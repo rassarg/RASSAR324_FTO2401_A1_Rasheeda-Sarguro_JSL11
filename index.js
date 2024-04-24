@@ -200,7 +200,7 @@ function setupEventListeners() {
     elements.filterDiv.style.display = "none"; // Also hide the filter overlay
   });
 
-  // Clicking outside the modal to close it
+  // Clicking outside the editTaskModal to close it
   elements.filterDiv.addEventListener("click", () => {
     toggleModal(false); //hides Add new task modal
     elements.editTaskModal.style.display = "none"; // Hides edit task modal
@@ -331,24 +331,36 @@ function openEditTaskModal(task) {
     saveTaskChanges(task.id);
   });
 
-  elements.deleteTaskBtn.addEventListener("click", () => {
-    // Delete task using a helper function
-    deleteTask(task.id);
-
-    // Display a confirmation message in the console
-    console.log(`Task ${task.title} has been deleted.`);
-    // After deleting the task, close the modal
-    toggleModal(false, elements.editTaskModal);
-    elements.filterDiv.style.display = "none";
-
-    // Remove the task element from the DOM
-    const taskElement = document.querySelector(
-      `.task-div[data-task-id="${task.id}"]`
+  elements.deleteTaskBtn.addEventListener("click", function confirmDelete() {
+    // Display a confirmation dialog
+    const confirmed = window.confirm(
+      `Are you sure you want to delete the task ${task.title}?`
     );
-    if (taskElement) {
-      taskElement.remove();
+    if (confirmed) {
+      // Delete task using a helper function
+      deleteTask(task.id);
+
+      // Display a confirmation message in the console
+      console.log(`Task ${task.title} has been deleted.`);
+      // After deleting the task, close the modal
+      toggleModal(false, elements.editTaskModal);
+      elements.filterDiv.style.display = "none";
+
+      // Remove the task element from the DOM
+      const taskElement = document.querySelector(
+        `.task-div[data-task-id="${task.id}"]`
+      );
+      if (taskElement) {
+        taskElement.remove();
+      }
+      //Remove event listener
+      elements.deleteTaskBtn.removeEventListener("click", confirmDelete);
+    } else {
+      //Remove event listener
+      elements.deleteTaskBtn.removeEventListener("click", confirmDelete);
     }
   });
+
   //  close the task modal
   elements.editTaskModal.style.display = "block";
   elements.filterDiv.style.display = "block";
