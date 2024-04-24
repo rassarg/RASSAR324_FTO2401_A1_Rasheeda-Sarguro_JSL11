@@ -281,7 +281,20 @@ function toggleSidebar(show) {
   elements.sideBar.style.display = show ? "flex" : "none";
   elements.hideSideBarDiv.style.display = show ? "flex" : "none";
   localStorage.setItem("showSideBar", show ? "true" : "false");
+  if (show) {
+    if (window.matchMedia("(max-width: 480px)").matches) {
+      elements.filterDiv.style.display = "block";
+    }
+  }
 }
+
+if (window.matchMedia("(max-width: 480px)").matches) {
+  elements.filterDiv.style.display = "true" && toggleSidebar(true);
+}
+elements.filterDiv.addEventListener("click", () => {
+  elements.filterDiv.style.display = "none";
+  toggleSidebar(false);
+});
 
 function toggleTheme() {
   const isLightTheme = document.body.classList.toggle("light-theme");
