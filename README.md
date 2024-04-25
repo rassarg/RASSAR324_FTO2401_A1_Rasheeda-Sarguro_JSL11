@@ -1,5 +1,20 @@
 ### [JSL11] Agile Board - Kanban Task Management App
 
+LOOM PRESENTATIONS:
+
+1: https://www.loom.com/share/4d62ea3f7d364817a847bfabd71d969e?sid=d2504383-124f-49bb-b9aa-45042c92c275
+2: https://www.loom.com/share/8a6d6430b3004661aa4337cf7cd32e6a?sid=22527679-6247-4cca-9f5f-21554335a614
+3: https://www.loom.com/share/27a64c32a95a40c3bd94d11fd03326eb?sid=b40cd201-5c07-4ebe-a8cc-77383e965646
+4: https://www.loom.com/share/53b6ebc91bc14d4a993ba73ccddbc4ef?sid=0e0d4266-1012-4a69-ab80-df56ddd2e8cd
+5: https://www.loom.com/share/93fab878501049da856306eb87f16a30?sid=724d5835-ec73-4464-b1fe-cb05445cf801
+6: https://www.loom.com/share/ed99c7b828174390af1b3276bc0685fb?sid=5b186fd6-cca1-48f3-9027-77ee85925a10
+7: https://www.loom.com/share/90d72cae752d44f5b533e1ecbe85ff82?sid=25c86160-8055-457d-a79f-f4cc268f3ec9
+8: https://www.loom.com/share/8bec92b610414957a6efb17228141e6c?sid=a7b8a680-af7f-433c-b684-bd83512ed5ae
+9: https://www.loom.com/share/c4d10f385289445d99dbd4a8efdac7e2?sid=1650475c-6e9b-40f4-9905-317f86b99e70
+10: https://www.loom.com/share/773562cd92794a5e97800c8a1ec0da7b?sid=0a377405-0746-4b7d-8f3b-d364d79acf1a
+11: https://www.loom.com/share/f759292d61224397b86fbbb994adf1ae?sid=48c9c4ee-42a1-472c-9329-d26c3688629b
+12: https://www.loom.com/share/2e878a0f4e2a4219aaaf0911d7927661?sid=3488493e-8dff-4aa4-be34-0aa308081e14
+
 Welcome to the Agile Board project, the final project for the JSL course! In this portfolio piece project, you will be stepping into the shoes of a junior developer tasked with bringing a Kanban Task Management App to life. You're not starting from scratch, though. In this project, you are tasked with tackling the provided user stories to both identify and fix bugs in the code, as well as to develop your own functions to extend the application's capabilities. Key assignments include importing utility functions, initializing data, and diving into debugging tasks such as setting up data correctly in local storage, dynamically displaying boards and tasks, and enhancing user interactions.
 
 Additionally, you will enhance the application by crafting code to meet specific functionalities outlined in the user stories, like managing task details and their lifecycle, toggling theme customization, and ensuring the persistence of data through local storage. This blend of debugging and creative coding invites you to apply your critical thinking and problem-solving skills in a hands-on manner, equipping you for the intricacies of real-world software development scenarios.

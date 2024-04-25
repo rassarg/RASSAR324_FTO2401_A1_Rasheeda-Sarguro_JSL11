@@ -46,11 +46,11 @@ const elements = {
   saveTaskChangesBtn: document.getElementById("save-task-changes-btn"),
 
   // Nav SideBar elements:
-  sideBar: document.querySelector(".side-bar"),
   hideSideBarDiv: document.querySelector(".hide-side-bar-div"),
   hideSideBarBtn: document.getElementById("hide-side-bar-btn"),
   logo: document.getElementById("logo"),
   showSideBarBtn: document.getElementById("show-side-bar-btn"),
+  sideBar: document.querySelector(".side-bar"),
   themeSwitch: document.getElementById("switch"),
 
   // Other elements:
@@ -76,7 +76,7 @@ function fetchAndDisplayBoardsAndTasks() {
   }
 }
 
-// Creates different boards in the DOM
+// Displays different boards in the DOM
 
 function displayBoards(boards) {
   const boardsContainer = document.getElementById("boards-nav-links-div");
