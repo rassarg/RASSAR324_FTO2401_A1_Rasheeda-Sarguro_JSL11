@@ -3,12 +3,19 @@
 LOOM PRESENTATIONS:
 
 1: https://www.loom.com/share/4d62ea3f7d364817a847bfabd71d969e?sid=d2504383-124f-49bb-b9aa-45042c92c275
+
 2: https://www.loom.com/share/27a64c32a95a40c3bd94d11fd03326eb?sid=e19be3b1-cab3-40cc-915f-25df46ec8aa3
+
 3: https://www.loom.com/share/93fab878501049da856306eb87f16a30?sid=894339f4-3ff1-46e6-b7d9-930579a3eccb
+
 4: https://www.loom.com/share/90d72cae752d44f5b533e1ecbe85ff82?sid=f0175efa-e176-447e-9e98-1cd6eda2a852
+
 5: https://www.loom.com/share/c4d10f385289445d99dbd4a8efdac7e2?sid=b3891e56-974e-40a2-ad45-7da994ffee6b
+
 6: https://www.loom.com/share/773562cd92794a5e97800c8a1ec0da7b?sid=0debf036-eda6-48ef-adaf-41bc1b199899
+
 7: https://www.loom.com/share/f759292d61224397b86fbbb994adf1ae?sid=5ae8b805-f2be-404d-ab8e-37be93fe4b13
+
 8: https://www.loom.com/share/2e878a0f4e2a4219aaaf0911d7927661?sid=f223fb0e-bc24-4098-b872-7724993244fb
 
 Welcome to the Agile Board project, the final project for the JSL course! In this portfolio piece project, you will be stepping into the shoes of a junior developer tasked with bringing a Kanban Task Management App to life. You're not starting from scratch, though. In this project, you are tasked with tackling the provided user stories to both identify and fix bugs in the code, as well as to develop your own functions to extend the application's capabilities. Key assignments include importing utility functions, initializing data, and diving into debugging tasks such as setting up data correctly in local storage, dynamically displaying boards and tasks, and enhancing user interactions.
